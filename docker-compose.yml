@@ -143,6 +143,10 @@ services:
     networks:
       - subride-user00
 
+  subride-front-user00:
+    image: docker.io/hiondal/subride-front:1.0.0
+    ports:
+      - "${FRONT_PORT}:3000"
 networks:
   subride-user00:
     driver: bridge
