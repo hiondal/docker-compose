@@ -144,6 +144,15 @@ services:
       - subride-user00
 
   subride-front-user00:
+    #build시간이 너무 오래 걸려 임시로 remark
+    #build:
+    #  context: .
+    #  dockerfile: buildfile/Dockerfile_react_express
+    #  args:
+    #    - PROJECT_FOLDER=subride-front
+    #    - BUILD_FOLDER=buildfile
+    #    - EXPORT_PORT=3000
+    #    - REACT_APP_API_BASE_URL=${SCG_HOST}    
     image: docker.io/hiondal/subride-front:1.0.0
     ports:
       - "${FRONT_PORT}:3000"
