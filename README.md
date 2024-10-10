@@ -60,6 +60,7 @@ docker-compose push
 
 ## Run container
 기존 실행 중인 container 모두 중지  
+단, subride-front 컨테이너는 중지하면 안됨  
 ```
 docker ps -a
 docker stop {id 또는 name}
