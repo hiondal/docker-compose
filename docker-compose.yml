@@ -1,0 +1,149 @@
+
+services:
+  config-user00:
+    build:
+      context: ./sc/config
+      dockerfile: buildfile/Dockerfile_java
+      args:
+        - BUILD_LIB_DIR=build/libs
+        - ARTIFACTORY_FILE=config.jar
+    image: docker.io/hiondal/config:1.0.0
+    ports:
+      - ":9001"
+    environment:
+      SERVER_PORT: 9001
+      GIT_URL: https://github.com:443/hiondal/subride-config.git
+      GIT_USERNAME: hiondal
+      GIT_BRANCH: main
+      GIT_TOKEN: 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
+      ENCRYPT_KEY: CL4cboqlIweOqt93wjzZi/qjCxcSOYAMgzdKiy6cG2Y=
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9001/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - subride-user00
+      
+  eureka1-user00:  
+    build:
+      context: ./sc/eureka
+      dockerfile: buildfile/Dockerfile_java
+      args:
+        - BUILD_LIB_DIR=build/libs
+        - ARTIFACTORY_FILE=eureka.jar
+    image: docker.io/hiondal/eureka:1.0.0
+    ports:
+      - ":8761"
+    environment:
+      HOSTNAME: eureka1-user00
+      SERVER_PORT: "8761"
+      REGISTER_WITH_EUREKA: "true"
+      FETCH_REGISTRY: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka2-user00:8762/eureka/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - subride-user00
+  eureka2-user00:  
+    depends_on:
+      eureka1-user00:
+        condition: service_healthy  
+    image: docker.io/hiondal/eureka:1.0.0
+    ports:
+      - ":8762"
+    environment:
+      HOSTNAME: eureka2-user00
+      SERVER_PORT: "8762"
+      REGISTER_WITH_EUREKA: "true"
+      FETCH_REGISTRY: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka1-user00:8761/eureka/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8762/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - subride-user00 
+  scg-user00:
+    depends_on:
+      eureka1-user00:
+        condition: service_healthy
+      eureka2-user00:
+        condition: service_healthy
+    build:
+      context: ./sc/scg
+      dockerfile: buildfile/Dockerfile_java
+      args:
+        - BUILD_LIB_DIR=build/libs
+        - ARTIFACTORY_FILE=scg.jar
+    image: docker.io/hiondal/scg:1.0.0
+    ports:
+      - "${SCG_PORT}:19080"
+    environment:
+      HOSTNAME: scg-user00
+      SERVER_PORT: 19080
+      EUREKA_SERVERS: ${EUREKA_SERVERS}
+      ALLOWED_ORIGINS: ${FRONT_HOST}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:19080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - subride-user00    
+  
+  mysql-user00:
+    image: mysql:8.0
+    container_name: my_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306" 
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - subride-user00  
+
+  subrecommend-user00:
+    depends_on:
+      mysql-user00:
+        condition: service_healthy
+      eureka1-user00:
+        condition: service_healthy
+      eureka2-user00:
+        condition: service_healthy
+      config-user00:
+        condition: service_healthy
+    build:
+      context: ./subrecommend-infra
+      dockerfile: buildfile/Dockerfile_java
+      args:
+        - BUILD_LIB_DIR=build/libs
+        - ARTIFACTORY_FILE=subrecommend.jar
+    image: docker.io/hiondal/subrecommend:1.0.0
+    ports:
+      - "18081"
+    env_file:
+      - .env
+    environment:
+      HOSTNAME: subrecommend-user00
+      SERVER_PORT: 18081
+      SPRING_APPLICATION_NAME: subrecommend-service
+      DB_URL: jdbc:mysql://mysql-user00:${DB_PORT}/subrecommend?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul
+    networks:
+      - subride-user00
+      
+networks:
+  subride-user00:
+    driver: bridge
