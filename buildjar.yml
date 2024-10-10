@@ -18,11 +18,11 @@ services:
         fi;
       done'
 
-  gradle-build-subride:
+  gradle-build-subrecommend:
     image: gradle:jdk22-alpine
     volumes:
-      - ./subride:/home/gradle/subride
-    working_dir: /home/gradle/subride
+      - ./subrecommend:/home/gradle/subrecommend
+    working_dir: /home/gradle/subrecommend
     command: >
       /bin/sh -c '
       for project in subrecommend-infra; do
@@ -34,8 +34,4 @@ services:
         else
           echo "Project $$project not found. Skipping.";
         fi;
-      done &&
-      
-      cd transfer &&
-      echo "##### Building transfer" &&
-      gradle build -x test'
+      done'
