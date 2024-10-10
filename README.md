@@ -1,6 +1,19 @@
 # Docker-compose를 이용한 Build/Deploy
 
 ## 작업환경 구성
+- sc, subrecommend 프로젝트 remote git repo에 푸시  
+  - github에 remote git repo 생성  
+  - local git 생성 및 remote git 연결  
+    ```
+    git init
+    git checkout -B main
+    git remote add origin {remote git repo 주소}  
+    ``` 
+  - Push
+    ```
+    git add . && git commit -m "release" && git push -u origin main 
+    ```
+
 - 작업 VM 로그인 
   본인 OS 계정으로 로그인   
   ```
