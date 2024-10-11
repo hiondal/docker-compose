@@ -16,6 +16,7 @@ services:
       GIT_BRANCH: main
       GIT_TOKEN: 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
       ENCRYPT_KEY: CL4cboqlIweOqt93wjzZi/qjCxcSOYAMgzdKiy6cG2Y=
+    restart: "no"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9001/actuator/health"]
       interval: 30s
@@ -40,6 +41,7 @@ services:
       REGISTER_WITH_EUREKA: "true"
       FETCH_REGISTRY: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka2-user00:8762/eureka/
+    restart: "no"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
       interval: 30s
@@ -60,6 +62,7 @@ services:
       REGISTER_WITH_EUREKA: "true"
       FETCH_REGISTRY: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka1-user00:8761/eureka/
+    restart: "no"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8762/actuator/health"]
       interval: 30s
@@ -87,6 +90,7 @@ services:
       SERVER_PORT: 19080
       EUREKA_SERVERS: ${EUREKA_SERVERS}
       ALLOWED_ORIGINS: ${FRONT_HOST}
+    restart: "no"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:19080/actuator/health"]
       interval: 30s
@@ -107,6 +111,7 @@ services:
       - "3306" 
     volumes:
       - ./data/mysql:/var/lib/mysql
+    restart: "no"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -140,6 +145,7 @@ services:
       SERVER_PORT: 18081
       SPRING_APPLICATION_NAME: subrecommend-service
       DB_URL: "jdbc:mysql://mysql-user00:3306/subrecommend?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul"
+    restart: "no"
     networks:
       - subride-user00
 
@@ -153,6 +159,7 @@ services:
         - EXPORT_PORT=3000
         - REACT_APP_API_BASE_URL=${SCG_HOST}    
     image: docker.io/hiondal/subride-front:1.0.0
+    restart: "no"
     ports:
       - "${FRONT_PORT}:3000"
 networks:
