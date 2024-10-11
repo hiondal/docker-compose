@@ -6,17 +6,17 @@ services:
       args:
         - BUILD_LIB_DIR=build/libs
         - ARTIFACTORY_FILE=config.jar
-    image: docker.io/hiondal/config:1.0.0
+    image: docker.io/${IMAGE_ORG}/config:${IMAGE_VERSION}
     restart: "no"
     ports:
       - "9001"
     environment:
       SERVER_PORT: 9001
-      GIT_URL: https://github.com:443/hiondal/subride-config.git
-      GIT_USERNAME: hiondal
-      GIT_BRANCH: main
-      GIT_TOKEN: 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
-      ENCRYPT_KEY: CL4cboqlIweOqt93wjzZi/qjCxcSOYAMgzdKiy6cG2Y=
+      GIT_URL: ${GIT_URL}
+      GIT_USERNAME: ${GIT_USERNAME}
+      GIT_BRANCH: ${GIT_BRANCH}
+      GIT_TOKEN: ${GIT_TOKEN}
+      ENCRYPT_KEY: ${ENCRYPT_KEY}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9001/actuator/health"]
       interval: 30s
@@ -32,7 +32,7 @@ services:
       args:
         - BUILD_LIB_DIR=build/libs
         - ARTIFACTORY_FILE=eureka.jar
-    image: docker.io/hiondal/eureka:1.0.0
+    image: docker.io/${IMAGE_ORG}/eureka:${IMAGE_VERSION}
     restart: "no"
     ports:
       - "8761"
@@ -53,7 +53,7 @@ services:
     depends_on:
       eureka1-user00:
         condition: service_healthy  
-    image: docker.io/hiondal/eureka:1.0.0
+    image: docker.io/${IMAGE_ORG}/eureka:${IMAGE_VERSION}
     restart: "no"
     ports:
       - "8762"
@@ -82,7 +82,7 @@ services:
       args:
         - BUILD_LIB_DIR=build/libs
         - ARTIFACTORY_FILE=scg.jar
-    image: docker.io/hiondal/scg:1.0.0
+    image: docker.io/${IMAGE_ORG}/scg:${IMAGE_VERSION}
     restart: "no"
     ports:
       - "${SCG_PORT}:19080"
@@ -102,7 +102,7 @@ services:
   mysql-user00:
     image: mysql:8.0
     restart: "no"
-    container_name: my_mysql
+    container_name: mysql-user00
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: mydb
@@ -135,7 +135,7 @@ services:
       args:
         - BUILD_LIB_DIR=build/libs
         - ARTIFACTORY_FILE=subrecommend.jar
-    image: docker.io/hiondal/subrecommend:1.0.0
+    image: docker.io/${IMAGE_ORG}/subrecommend:${IMAGE_VERSION}
     restart: "no"
     ports:
       - "18081"
@@ -159,7 +159,7 @@ services:
         - BUILD_FOLDER=buildfile
         - EXPORT_PORT=3000
         - REACT_APP_API_BASE_URL=${SCG_HOST}    
-    image: docker.io/hiondal/subride-front:1.0.0
+    image: docker.io/${IMAGE_ORG}/subride-front:${IMAGE_VERSION}
     restart: "no"
     ports:
       - "${FRONT_PORT}:3000"
