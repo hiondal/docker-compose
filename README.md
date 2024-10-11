@@ -41,6 +41,25 @@
 - 환경변수 파일 수정  
   .env 파일을 열고 아래 내용 수정  
   ```
+  #Image Organization: Organization 수정 필요 
+  IMABE_ORG=hiondal
+  IMAGE_VERSION=2.0.0
+
+  #Frontend service: 포트 번호 수정-30{OS계정 끝 2자리}
+  FRONT_HOST=http://user00.13.215.90.232.nip.io:3000
+  FRONT_PORT=3000
+
+  #Git Config Git: URL, USERNAME, TOKEN 수정 필요 
+  GIT_URL=https://github.com:443/hiondal/subride-config.git
+  GIT_USERNAME=hiondal
+  GIT_BRANCH=main
+  GIT_TOKEN=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
+  ENCRYPT_KEY=CL4cboqlIweOqt93wjzZi/qjCxcSOYAMgzdKiy6cG2Y=
+
+  #SCG:외부포트수정: 190{OS계정 끝 2자리}
+  SCG_HOST=http://user00.13.215.90.232.nip.io:19000
+  SCG_PORT=19000
+
   #Frontend service: 포트 번호 수정-30{OS계정 끝 2자리}
   FRONT_HOST=http://user01.13.215.90.232.nip.io:3000
   FRONT_PORT=3000
