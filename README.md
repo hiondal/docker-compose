@@ -78,6 +78,10 @@ docker-compose -f buildjar.yml up
 ```
 docker-compose build
 ```
+본인 login id로 docker hub 로그인  
+```
+docker login -u hiondal
+```
 
 ```
 docker-compose push
