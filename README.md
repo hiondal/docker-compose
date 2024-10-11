@@ -42,7 +42,7 @@
   .env 파일을 열고 아래 내용 수정  
   ```
   #Image Organization: Organization 수정 필요 
-  IMABE_ORG=hiondal
+  IMAGE_ORG=hiondal
   IMAGE_VERSION=2.0.0
 
   #Frontend service: 포트 번호 수정-30{OS계정 끝 2자리}
