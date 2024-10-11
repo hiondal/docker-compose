@@ -63,6 +63,12 @@ git clone https://github.com/hiondal/subrecommend.git
 ```
 git clone https://github.com/hiondal/subride-front.git 
 ```
+
+## 기존에 비정상 종료된 container 삭제  
+```
+docker-compose down --remove-orphans
+```
+
 ## Build jar 
 ```
 docker-compose -f buildjar.yml up
