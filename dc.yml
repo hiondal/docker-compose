@@ -144,6 +144,7 @@ services:
       - subride-user00
 
   subride-front-user00:
+    #build시간이 너무 오래 걸려 임시로 remark
     build:
       context: .
       dockerfile: buildfile/Dockerfile_react_express

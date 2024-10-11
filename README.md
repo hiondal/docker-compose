@@ -1,7 +1,7 @@
 # Docker-compose를 이용한 Build/Deploy
 
 ## 작업환경 구성
-- sc, subrecommend 프로젝트 remote git repo에 푸시  
+- sc, subrecommend, subride-front 프로젝트 remote git repo에 푸시  
   - github에 remote git repo 생성  
   - local git 생성 및 remote git 연결  
     ```
@@ -49,7 +49,7 @@
   SCG_PORT=19000
   ```
 
-## sc, subrecommend 소스 클론  
+## sc, subrecommend, subride-front 소스 클론  
 먼저 PC에서 작업한 sc, subrecommend 프로젝트를 remote git repo에 푸시 해야 함  
 hiondal은 본인의 Git organization으로 변경해야 함  
 ```
@@ -60,6 +60,9 @@ git clone https://github.com/hiondal/sc.git
 git clone https://github.com/hiondal/subrecommend.git 
 ```
 
+```
+git clone https://github.com/hiondal/subride-front.git 
+```
 ## Build jar 
 ```
 docker-compose -f buildjar.yml up
