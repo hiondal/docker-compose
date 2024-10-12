@@ -15,7 +15,8 @@
     ```
 
 - 작업 VM 로그인 
-  본인 OS 계정으로 로그인   
+  본인 OS 계정으로 로그인
+  ssh 로그인 설정은 [여기](https://github.com/cna-bootcamp/cna-handson/blob/main/prepare/%EB%A1%9C%EC%BB%AC%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EA%B5%AC%EC%84%B1.md#ssh-login-%EC%84%A4%EC%A0%95)를 참고 하세요. 
   ```
   ssh user00
   ```
